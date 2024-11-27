@@ -1,7 +1,7 @@
 //index
 const express = require('express');
 const app = express();
-const userRoutes = require('./db'); // Importa as rotas de usuários
+const userRoutes = require('./Router/Routes'); // Importa as rotas de usuários
 // Middleware para interpretar JSON no corpo das requisições
 app.use(express.json());
 // Usa as rotas definidas no arquivo userRoutes
