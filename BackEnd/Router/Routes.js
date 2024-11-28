@@ -7,7 +7,7 @@ const userControllers = require("../Controller/Controllers");
 router.get("/users", userControllers.getUsers);
 
 //Usuario por ID
-router.get("/users/id/:id", userControllers.getUsersById);
+router.get("/users/id/:id", userControllers.getUserById);
 
 //Usuario por nome
 router.get("/users/name/:name", userControllers.getUsersByName);

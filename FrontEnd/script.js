@@ -33,17 +33,17 @@ async function fetchUsers() {
 // Função para adicionar um novo usuário
 async function addUser() {
   const nameInput = document.getElementById("name");
-  const ageInput = document.getElementById("age");
+  const idadeInput = document.getElementById("idade");
   const emailInput = document.getElementById("email");
-  const contactInput = document.getElementById("contact");
+  const contatoInput = document.getElementById("contato");
 
   const name = nameInput.value.trim();
-  const age = parseInt(ageInput.value.trim());
+  const idade = parseInt(idadeInput.value.trim());
   const email = emailInput.value.trim();
-  const contact = contactInput.value.trim();
+  const contato = contatoInput.value.trim();
 
   // Validação dos campos
-  if (!name || isNaN(age) || age <= 0 || !email || !contact) {
+  if (!name || isNaN(idade) || idade <= 0 || !email || !contato) {
     alert("Por favor, preencha todos os campos corretamente.");
     return;
   }
@@ -53,7 +53,7 @@ async function addUser() {
     return;
   }
 
-  if (!validateContact(contact)) {
+  if (!validatecontato(contato)) {
     alert("Por favor, insira um contato válido (exemplo: 99999-9999).");
     return;
   }
@@ -61,20 +61,20 @@ async function addUser() {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, age, email, contact }),
+    body: JSON.stringify({ name, idade, email, contato }),
   });
 
   if (response.ok) {
     alert("Usuário adicionado com sucesso!");
     // Limpa os campos do formulário
     nameInput.value = "";
-    ageInput.value = "";
+    idadeInput.value = "";
     emailInput.value = "";
-    contactInput.value = "";
+    contatoInput.value = "";
     fetchUsers(); // Atualiza a lista de usuários
   } else {
     const error = await response.json();
-    alert(`Erro ao adicionar usuário: ${error.message}`);
+    alert(`Erro ao adicionar usuário: ${error.messidade}`);
   }
 }
 
@@ -85,20 +85,20 @@ function validateEmail(email) {
 }
 
 // Função para validar contato (formato 99999-9999)
-function validateContact(contact) {
+function validatecontato(contato) {
   const regex = /^\d{5}-\d{4}$/;
-  return regex.test(contact);
+  return regex.test(contato);
 }
 
 
 // Função para atualizar os dados de um usuário
 async function updateUser(id) {
   const newName = prompt("Digite o novo nome do usuário:");
-  const newAge = prompt("Digite a nova idade do usuário:");
+  const newidade = prompt("Digite a nova idade do usuário:");
   const newEmail = prompt("Digite o novo email do usuário:");
-  const newContact = prompt("Digite o novo contato do usuário:");
+  const newcontato = prompt("Digite o novo contato do usuário:");
 
-  if (!newName || isNaN(newAge) || newAge <= 0 || !newEmail || !newContact) {
+  if (!newName || isNaN(newidade) || newidade <= 0 || !newEmail || !newcontato) {
     alert("Por favor, insira valores válidos.");
     return;
   }
@@ -108,7 +108,7 @@ async function updateUser(id) {
     return;
   }
 
-  if (!validateContact(newContact)) {
+  if (!validatecontato(newcontato)) {
     alert("Por favor, insira um contato válido (exemplo: 99999-9999).");
     return;
   }
@@ -118,9 +118,9 @@ async function updateUser(id) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: newName,
-      idade: parseInt(newAge),
+      idade: parseInt(newidade),
       email: newEmail,
-      contato: newContact,
+      contato: newcontato,
     }),
   });
 

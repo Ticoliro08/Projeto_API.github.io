@@ -12,16 +12,20 @@ exports.getUsers = (req, res) => {
   });
 };
 
-// Função para buscar um aluno pelo ID
-exports.getUsersById = (req, res) => {
-  const { id } = req.params; // Extrai o RM dos parâmetros da URL
+// Função para buscar um usuário pelo ID
+exports.getUserById = (req, res) => {
+  const { id } = req.params;
 
-  userModel.getUsersById(id, (err, users) => {
+  userModel.getUserById(parseInt(id), (err, user) => {
     if (err) {
-      res.status(500).send("Erro ao buscar usuario"); // Erro no servidor
-    } else {
-      res.json(users); // Retorna os dados do aluno em formato JSON
+      return res.status(400).json({ error: err.message }); // Retorna mensagem de erro detalhada
     }
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    res.status(200).json(user); // Retorna o usuário encontrado
   });
 };
 

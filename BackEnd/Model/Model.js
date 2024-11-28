@@ -48,53 +48,50 @@ exports.getAllUsers = (callback) => {
 };
 
 
-// Função para buscar um usuário pelo  CPF
-exports.getUsersByCPF = (id, callback) => {
-  const connection = createConnection(); // Cria a conexão com o banco de dados
+// Função para buscar um usuário pelo ID
+exports.getUserById = (id, callback) => {
+  if (isNaN(id) || id <= 0) {
+    return callback(new Error("ID inválido"), null);
+  }
 
+  const connection = createConnection();
   connection.on("connect", (err) => {
     if (err) {
-      return callback(err, null); // Se houver erro de conexão
+      return callback(err, null);
     }
 
-    // Consulta SQL para buscar um aluno pelo RM
     const query = `SELECT * FROM users WHERE id = @id`;
-
     const request = new Request(query, (err, rowCount) => {
       if (err) {
-        return callback(err, null); // Se houver erro na execução da consulta
+        return callback(err, null);
       }
 
       if (rowCount === 0) {
-        return callback(null, []); // Se nenhum aluno for encontrado
+        // Garante que o callback só seja chamado uma vez com resultado nulo
+        return callback(null, null);
       }
     });
 
-    // Variável para armazenar os resultados da consulta
-    const result = [];
-
-    // Evento 'row' para capturar todas as linhas de resultados
+    let user = null;
     request.on("row", (columns) => {
-      result.push({
-        id: columns[0].value, // Captura o valor da primeira coluna (id)
-        name: columns[1].value, // Captura o valor da segunda coluna (name)
-        email: columns[2].value, // Captura o valor da terceira coluna (email)
-        idade: columns[3].value, // Captura o valor da quarta coluna (idade)
-        contato: columns[4].value, // Captura o valor da quinta coluna (contato)
-      });
+      user = {
+        id: columns[0].value,
+        name: columns[1].value,
+        idade: columns[2].value,
+        email: columns[3].value,
+        contato: columns[4].value,
+      };
     });
 
-    // Evento 'requestCompleted' para retornar o resultado após a execução
     request.on("requestCompleted", () => {
-      callback(null, result); // Retorna o aluno encontrado ou null
+      callback(null, user);
     });
 
-    // Executa a consulta SQL
-    request.addParameter("id", TYPES.VarChar, id); // Adiciona o RM como parâmetro
-    connection.execSql(request); // Executa a consulta
+    request.addParameter("id", TYPES.Int, id);
+    connection.execSql(request);
   });
 
-  connection.connect(); // Inicia a conexão com o banco de dados
+  connection.connect();
 };
 
 exports.getUsersByName = (name, callback) => {
