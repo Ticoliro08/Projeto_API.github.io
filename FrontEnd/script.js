@@ -33,17 +33,17 @@ async function fetchUsers() {
 // Função para adicionar um novo usuário
 async function addUser() {
   const nameInput = document.getElementById("name");
-  const idadeInput = document.getElementById("idade");
+  const ageInput = document.getElementById("age");
   const emailInput = document.getElementById("email");
-  const contatoInput = document.getElementById("contato");
+  const contactInput = document.getElementById("contact");
 
   const name = nameInput.value.trim();
-  const idade = parseInt(idadeInput.value.trim());
+  const age = parseInt(ageInput.value.trim());
   const email = emailInput.value.trim();
-  const contato = contatoInput.value.trim();
+  const contact = contactInput.value.trim();
 
   // Validação dos campos
-  if (!name || isNaN(idade) || idade <= 0 || !email || !contato) {
+  if (!name || isNaN(age) || age <= 0 || !email || !contact) {
     alert("Por favor, preencha todos os campos corretamente.");
     return;
   }
@@ -53,7 +53,7 @@ async function addUser() {
     return;
   }
 
-  if (!validatecontato(contato)) {
+  if (!validateContact(contact)) {
     alert("Por favor, insira um contato válido (exemplo: 99999-9999).");
     return;
   }
@@ -61,20 +61,20 @@ async function addUser() {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, idade, email, contato }),
+    body: JSON.stringify({ name, age, email, contact }),
   });
 
   if (response.ok) {
     alert("Usuário adicionado com sucesso!");
     // Limpa os campos do formulário
     nameInput.value = "";
-    idadeInput.value = "";
+    ageInput.value = "";
     emailInput.value = "";
-    contatoInput.value = "";
+    contactInput.value = "";
     fetchUsers(); // Atualiza a lista de usuários
   } else {
     const error = await response.json();
-    alert(`Erro ao adicionar usuário: ${error.messidade}`);
+    alert(`Erro ao adicionar usuário: ${error.message}`);
   }
 }
 
@@ -85,20 +85,20 @@ function validateEmail(email) {
 }
 
 // Função para validar contato (formato 99999-9999)
-function validatecontato(contato) {
+function validateContact(contact) {
   const regex = /^\d{5}-\d{4}$/;
-  return regex.test(contato);
+  return regex.test(contact);
 }
 
 
 // Função para atualizar os dados de um usuário
 async function updateUser(id) {
   const newName = prompt("Digite o novo nome do usuário:");
-  const newidade = prompt("Digite a nova idade do usuário:");
+  const newAge = prompt("Digite a nova idade do usuário:");
   const newEmail = prompt("Digite o novo email do usuário:");
-  const newcontato = prompt("Digite o novo contato do usuário:");
+  const newContact = prompt("Digite o novo contato do usuário:");
 
-  if (!newName || isNaN(newidade) || newidade <= 0 || !newEmail || !newcontato) {
+  if (!newName || isNaN(newAge) || newAge <= 0 || !newEmail || !newContact) {
     alert("Por favor, insira valores válidos.");
     return;
   }
@@ -108,7 +108,7 @@ async function updateUser(id) {
     return;
   }
 
-  if (!validatecontato(newcontato)) {
+  if (!validateContact(newContact)) {
     alert("Por favor, insira um contato válido (exemplo: 99999-9999).");
     return;
   }
@@ -118,9 +118,9 @@ async function updateUser(id) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: newName,
-      idade: parseInt(newidade),
+      age: parseInt(newAge),
       email: newEmail,
-      contato: newcontato,
+      contact: newContact,
     }),
   });
 
@@ -171,9 +171,9 @@ async function fetchUsers() {
     userItem.innerHTML = `
       <div>
         <p><strong>Nome:</strong> ${user.name}</p>
-        <p><strong>Idade:</strong> ${user.idade}</p>
+        <p><strong>Idade:</strong> ${user.age}</p>
         <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>Contato:</strong> ${user.contato}</p>
+        <p><strong>Contato:</strong> ${user.contact}</p>
       </div>
       <div>
         <button class="update-user-btn" onclick="updateUser(${user.id})">Atualizar</button>
@@ -210,9 +210,9 @@ async function fetchUserById() {
         <h2>Detalhes do Usuário</h2>
         <p><strong>ID:</strong> ${user.id}</p>
         <p><strong>Nome:</strong> ${user.name}</p>
-        <p><strong>Idade:</strong> ${user.idade}</p>
+        <p><strong>Idade:</strong> ${user.age}</p>
         <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>Contato:</strong> ${user.contato}</p>
+        <p><strong>Contato:</strong> ${user.contact}</p>
       `;
     }
   } catch (error) {
